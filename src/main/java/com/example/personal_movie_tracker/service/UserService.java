@@ -2,6 +2,7 @@ package com.example.personal_movie_tracker.service;
 
 import java.util.Set;
 
+import com.example.personal_movie_tracker.exceptions.MovieNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.personal_movie_tracker.enums.MovieStatus;
@@ -54,7 +55,7 @@ public class UserService {
 		return movieService.saveMovieInDB(movie);
 	}
 	
-	public Movie updateMovieStatus(String movieUID, String userEmailID, String status) {
+	public Movie updateMovieStatus(String movieUID, String userEmailID, String status) throws MovieNotFoundException {
 		User user = fetchUserByEmailID(userEmailID);
 		boolean isUpdated = movieService.updateMovieStatusByMovieUIDandUserUID(mapMovieStatus(status), movieUID, user.getUserUID());
 		

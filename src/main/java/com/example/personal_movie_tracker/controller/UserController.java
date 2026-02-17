@@ -1,5 +1,6 @@
 package com.example.personal_movie_tracker.controller;
 
+import com.example.personal_movie_tracker.exceptions.MovieNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -53,6 +54,8 @@ public class UserController {
 	public ResponseEntity<?> updateMovieStatus(@PathVariable String statusType, @PathVariable String movieUID, Authentication auth) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.updateMovieStatus(movieUID, auth.getName(), statusType));
+		} catch (MovieNotFoundException notFoundExcept) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(notFoundExcept.getMessage());
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}

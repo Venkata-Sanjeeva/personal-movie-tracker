@@ -3,6 +3,7 @@ package com.example.personal_movie_tracker.service;
 import java.util.List;
 import java.util.Set;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.example.personal_movie_tracker.enums.MovieStatus;
@@ -67,15 +68,19 @@ public class MovieService {
 	}
 	
 	// Update status of a movie using user UID and movie UID
+	@Transactional
 	public boolean updateMovieStatusByMovieUIDandUserUID(MovieStatus status, String movieUID, String userUID) {
-		if(existsByMovieUIDandUserUID(movieUID, userUID)) {
-			movieRepo.updateStatusForUser(movieUID, status, userUID);
-			return true;
-		} 
-		
-		throw new MovieNotFoundException("Movie with ID: " + movieUID + " for user with ID: " + userUID + " not found!");
+
+		Movie movie = movieRepo.findByMovieUIDAndUser_UserUID(movieUID, userUID)
+				.orElseThrow(() -> new MovieNotFoundException("Movie not found"));
+
+		movie.setStatus(status);
+
+		movieRepo.save(movie); // ✅ triggers @PreUpdate
+		return true;
 	}
-	
+
+
 	public List<Movie> fetchAllAvailableMovies() {
 		return movieRepo.findAll();
 	}
