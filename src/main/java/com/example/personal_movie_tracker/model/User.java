@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.example.personal_movie_tracker.enums.Roles;
+import com.example.personal_movie_tracker.utils.IdentifierGenerator;
 
 @Entity
 @Table(name = "users")
@@ -37,9 +40,16 @@ public class User {
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
-
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Movie> movies = new HashSet<>();
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        // Ensure userUID is generated if not set manually
+        if (this.userUID == null) {
+            this.userUID = IdentifierGenerator.generate("USER");
+        }
     }
 }

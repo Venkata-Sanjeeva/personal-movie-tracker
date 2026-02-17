@@ -9,7 +9,6 @@ import com.example.personal_movie_tracker.exceptions.InvalidLoginCredentialsExce
 import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
 import com.example.personal_movie_tracker.model.User;
 import com.example.personal_movie_tracker.repository.UserRepository;
-import com.example.personal_movie_tracker.utils.IdentifierGenerator;
 
 @Service
 public class RegisterAndLoginService {
@@ -34,9 +33,6 @@ public class RegisterAndLoginService {
 
         User user = new User();
         
-        String roleUC = role.toUpperCase();
-
-        user.setUserUID(IdentifierGenerator.generate(roleUC));
         user.setName(name);
         user.setEmail(email);
 
