@@ -1,5 +1,0 @@
-package com.example.personal_movie_tracker.enums;
-
-public enum Status {
-
-}
