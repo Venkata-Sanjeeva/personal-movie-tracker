@@ -27,9 +27,6 @@ public class Movie {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 1000) // Allows for longer descriptions
-    private String description;
-
     @Column(name = "release_year")
     private Integer releaseYear;
 

@@ -41,11 +41,12 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**", // Simplified: allows both user/admin register & login
                                 "/api/public/**",
+                                "/api/email/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/email/**"
+                                "/swagger-ui.html"
                         ).permitAll()
+                        .requestMatchers("/api/user").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
