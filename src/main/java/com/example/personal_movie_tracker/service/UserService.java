@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import com.example.personal_movie_tracker.enums.MovieStatus;
 import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
 import com.example.personal_movie_tracker.model.Movie;
 import com.example.personal_movie_tracker.model.User;
@@ -47,8 +48,31 @@ public class UserService {
 		Movie movie = Movie.builder()
 				.title(request.getTitle())
 				.releaseYear(request.getReleaseYear())
+				.user(user)
 				.build();
 		
 		return movieService.saveMovieInDB(movie);
+	}
+	
+	public Movie updateMovieStatus(String movieUID, String userEmailID, String status) {
+		User user = fetchUserByEmailID(userEmailID);
+		boolean isUpdated = movieService.updateMovieStatusByMovieUIDandUserUID(mapMovieStatus(status), movieUID, user.getUserUID());
+		
+		if(isUpdated) {
+			return movieService.fetchMovieByuserUIDandMovieUID(user.getUserUID(), movieUID);
+		}
+		return null;
+	}
+	
+	public MovieStatus mapMovieStatus(String statusStr) {
+		return switch (statusStr) {
+			case "WANT_TO_DOWNLOAD" -> MovieStatus.WANT_TO_DOWNLOAD;
+			case "DOWNLOADED" -> MovieStatus.DOWNLOADED;
+			case "WATCHING" -> MovieStatus.WATCHING;
+			case "WATCHED" -> MovieStatus.WATCHED;
+			
+			default -> 
+			throw new IllegalArgumentException("Unexpected value: " + statusStr);
+		};
 	}
 }
