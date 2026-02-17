@@ -8,6 +8,7 @@ import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
 import com.example.personal_movie_tracker.model.Movie;
 import com.example.personal_movie_tracker.model.User;
 import com.example.personal_movie_tracker.repository.UserRepository;
+import com.example.personal_movie_tracker.requests.CreateMovieRequest;
 import com.example.personal_movie_tracker.responses.UserMoviesResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,16 @@ public class UserService {
 				.userUID(user.getUserUID())
 				.moviesList(moviesList)
 				.build();
+	}
+	
+	public Movie createMovieForUser(CreateMovieRequest request, String userEmailID) throws UserNotFoundException {
+		User user = fetchUserByEmailID(userEmailID);
 		
+		Movie movie = Movie.builder()
+				.title(request.getTitle())
+				.releaseYear(request.getReleaseYear())
+				.build();
+		
+		return movieService.saveMovieInDB(movie);
 	}
 }

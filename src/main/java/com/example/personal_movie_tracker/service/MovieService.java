@@ -18,6 +18,10 @@ public class MovieService {
 	
 	private final MovieRepository movieRepo;
 	
+	public Movie saveMovieInDB(Movie movie) {
+		return movieRepo.save(movie);
+	}
+	
 	// 1. Get specific movie for a specific user
 	public Movie fetchMovieByuserUIDandMovieUID(String userUID, String movieUID) {
 		return movieRepo.findByMovieUIDAndUser_UserUID(movieUID, userUID)
