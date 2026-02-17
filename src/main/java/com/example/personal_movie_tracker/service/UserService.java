@@ -32,7 +32,7 @@ public class UserService {
 	public UserMoviesResponse fetchUserCreatedMovies(String userEmailId) {
 		User user = fetchUserByEmailID(userEmailId);
 		
-		Set<Movie> moviesList = movieService.fetchMoviesByUserId(user.getUserUID());
+		Set<Movie> moviesList = movieService.fetchMoviesByUserUID(user.getUserUID());
 		
 		return UserMoviesResponse.builder()
 				.userUID(user.getUserUID())

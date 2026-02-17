@@ -42,6 +42,8 @@ public class SecurityConfig {
                                 "/api/auth/**", // Simplified: allows both user/admin register & login
                                 "/api/public/**",
                                 "/api/email/**",
+                                "/api/movies/**",
+                                
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
