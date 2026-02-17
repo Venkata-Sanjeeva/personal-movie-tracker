@@ -62,6 +62,16 @@ public class MovieService {
 		throw new MovieNotFoundException("Movie with ID: " + movieUID + " for user with ID: " + userUID + " not found!");
 	}
 	
+	// Update status of a movie using user UID and movie UID
+	public boolean updateMovieStatusByMovieUIDandUserUID(MovieStatus status, String movieUID, String userUID) {
+		if(existsByMovieUIDandUserUID(movieUID, userUID)) {
+			movieRepo.updateStatusForUser(movieUID, status, userUID);
+			return true;
+		} 
+		
+		throw new MovieNotFoundException("Movie with ID: " + movieUID + " for user with ID: " + userUID + " not found!");
+	}
+	
 	public List<Movie> fetchAllAvailableMovies() {
 		return movieRepo.findAll();
 	}
