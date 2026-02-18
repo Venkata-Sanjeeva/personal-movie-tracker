@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -29,6 +30,9 @@ public class EmailService {
 	private final UserRepository userRepo;
 	private final PasswordResetTokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
+    
+    @Value("${FRONTEND_URL}") 
+    private String frontendURL;
     
     @Async
     @Transactional
@@ -53,7 +57,7 @@ public class EmailService {
             tokenRepository.save(resetToken);
 
             // 4. Prepare the Email
-            String resetUrl = String.format("http://yourfrontend.com/reset-password?token=%s", token);
+            String resetUrl = String.format("%s?token=%s", frontendURL, token);
 
         	String htmlContent = String.format("""
         	    <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e1e1e1; padding: 20px; border-radius: 10px;">
