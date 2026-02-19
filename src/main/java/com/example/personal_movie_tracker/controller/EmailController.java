@@ -1,16 +1,11 @@
 package com.example.personal_movie_tracker.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.personal_movie_tracker.requests.ResetPasswordRequest;
 import com.example.personal_movie_tracker.service.EmailService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.mail.MessagingException;
 
 @RestController
@@ -38,6 +33,7 @@ public class EmailController {
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
         try {
+            System.out.println(request.getToken() + " : " + request.getNewPassword());
             emailService.updatePassword(request.getToken(), request.getNewPassword());
             return ResponseEntity.ok("Password has been successfully updated.");
         } catch (IllegalArgumentException e) {
