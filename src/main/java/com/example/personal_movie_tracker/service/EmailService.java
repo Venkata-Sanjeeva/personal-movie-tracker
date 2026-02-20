@@ -84,14 +84,14 @@ public class EmailService {
         	    """, resetUrl, resetUrl);
 
             // 5. Send it
-        	// sendHtmlEmail(email, "Reset your CAT API Password", htmlContent);
+        	 sendHtmlEmail(email, "Reset your CAT API Password", htmlContent);
         	
         	// 5. Send it using third party platform called "Resend"
-        	try {
-        		resendEmailService.sendResetPasswordEmail(email, "Reset your Beyond Shorts Account Password", htmlContent);
-			} catch (Exception e) {
-				throw new MessagingException("Error sending email!!!\n" + e.getMessage());
-			}
+//        	try {
+//        		resendEmailService.sendResetPasswordEmail(email, "Reset your Beyond Shorts Account Password", htmlContent);
+//			} catch (Exception e) {
+//				throw new MessagingException("Error sending email!!!\n" + e.getMessage());
+//			}
         }
         // If user is not present, we do nothing (security best practice)
     }
