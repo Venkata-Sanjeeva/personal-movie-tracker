@@ -48,6 +48,11 @@ public class Movie {
     @JsonIgnore
     @ToStringExclude
     private User user;
+    
+    @ManyToOne
+    @JsonIgnore
+    @ToStringExclude
+    private Favourite favourite;
 
     // --- Lifecycle Hooks ---
 

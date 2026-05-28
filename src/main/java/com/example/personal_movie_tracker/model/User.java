@@ -44,6 +44,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Movie> movies = new HashSet<>();
     
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Favourite> favourite = new HashSet<>();
+    
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

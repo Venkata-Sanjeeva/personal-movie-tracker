@@ -1,12 +1,14 @@
 package com.example.personal_movie_tracker.service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.example.personal_movie_tracker.exceptions.MovieNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.personal_movie_tracker.enums.MovieStatus;
 import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
+import com.example.personal_movie_tracker.model.Favourite;
 import com.example.personal_movie_tracker.model.Movie;
 import com.example.personal_movie_tracker.model.User;
 import com.example.personal_movie_tracker.repository.UserRepository;
@@ -21,6 +23,21 @@ public class UserService {
 
 	private final UserRepository userRepo;
 	private final MovieService movieService;
+	
+	private UserMoviesResponse.MovieResponse convertMovieToResponse(Movie movie) {
+		Favourite fav = movie.getFavourite();
+		
+		return UserMoviesResponse.MovieResponse.builder()
+				.movieUID(movie.getMovieUID())
+				.title(movie.getTitle())
+				.releaseYear(movie.getReleaseYear())
+				.status(movie.getStatus())
+				.createdAt(movie.getCreatedAt())
+				.lastWatchedAt(movie.getLastWatchedAt())
+				.isAddedToFavourite(fav != null)
+				.favUID(fav == null ? null: movie.getFavourite().getFavUID())
+				.build();
+	}
 	
 	public User fetchUserByEmailID(String userEmailId) throws UserNotFoundException {
 		return userRepo.findByEmail(userEmailId)
@@ -39,7 +56,7 @@ public class UserService {
 		
 		return UserMoviesResponse.builder()
 				.userUID(user.getUserUID())
-				.moviesList(moviesList)
+				.moviesList(moviesList.stream().map(movie -> convertMovieToResponse(movie)).collect(Collectors.toSet()))
 				.build();
 	}
 	

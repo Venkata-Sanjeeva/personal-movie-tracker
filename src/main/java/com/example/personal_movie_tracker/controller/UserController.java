@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.personal_movie_tracker.enums.MovieStatus;
 import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
 import com.example.personal_movie_tracker.requests.CreateMovieRequest;
 import com.example.personal_movie_tracker.responses.UserMoviesResponse;

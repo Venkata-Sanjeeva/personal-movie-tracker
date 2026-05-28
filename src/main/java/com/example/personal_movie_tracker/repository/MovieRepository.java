@@ -17,6 +17,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     // 1. Find a specific movie for a specific user (Security Best Practice)
     Optional<Movie> findByMovieUIDAndUser_UserUID(String movieUID, String userUID);
+    
+    Optional<Movie> findByMovieUID(String movieUID);
 
     // 2. Get all movies for a specific user by their UserUID
     Set<Movie> findAllByUser_UserUID(String userUID);

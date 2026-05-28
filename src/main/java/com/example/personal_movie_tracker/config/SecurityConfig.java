@@ -43,6 +43,7 @@ public class SecurityConfig {
                                 "/api/public/**",
                                 "/api/email/**",
                                 "/api/movies/**",
+                                "/api/favourite/**",
                                 
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
