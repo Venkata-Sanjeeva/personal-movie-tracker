@@ -11,6 +11,7 @@ import com.example.personal_movie_tracker.exceptions.UserNotFoundException;
 import com.example.personal_movie_tracker.model.Favourite;
 import com.example.personal_movie_tracker.model.Movie;
 import com.example.personal_movie_tracker.model.User;
+import com.example.personal_movie_tracker.repository.FavouriteRepository;
 import com.example.personal_movie_tracker.repository.UserRepository;
 import com.example.personal_movie_tracker.requests.CreateMovieRequest;
 import com.example.personal_movie_tracker.responses.UserMoviesResponse;
@@ -23,9 +24,16 @@ public class UserService {
 
 	private final UserRepository userRepo;
 	private final MovieService movieService;
+	private final FavouriteRepository favRepo;
 	
-	private UserMoviesResponse.MovieResponse convertMovieToResponse(Movie movie) {
-		Favourite fav = movie.getFavourite();
+	private UserMoviesResponse.MovieResponse convertMovieToResponse(User user, Movie movie) {
+		boolean isUserFavMovie = favRepo.existsByUserAndMovie(user, movie);
+		
+		Favourite favObj = null;
+		
+		if(isUserFavMovie) {
+			favObj = favRepo.findByUserAndMovie(user, movie);
+		}
 		
 		return UserMoviesResponse.MovieResponse.builder()
 				.movieUID(movie.getMovieUID())
@@ -34,8 +42,8 @@ public class UserService {
 				.status(movie.getStatus())
 				.createdAt(movie.getCreatedAt())
 				.lastWatchedAt(movie.getLastWatchedAt())
-				.isAddedToFavourite(fav != null)
-				.favUID(fav == null ? null: movie.getFavourite().getFavUID())
+				.isAddedToFavourite(isUserFavMovie)
+				.favUID(isUserFavMovie ? favObj.getFavUID(): null)
 				.build();
 	}
 	
@@ -56,7 +64,7 @@ public class UserService {
 		
 		return UserMoviesResponse.builder()
 				.userUID(user.getUserUID())
-				.moviesList(moviesList.stream().map(movie -> convertMovieToResponse(movie)).collect(Collectors.toSet()))
+				.moviesList(moviesList.stream().map(movie -> convertMovieToResponse(user, movie)).collect(Collectors.toSet()))
 				.build();
 	}
 	

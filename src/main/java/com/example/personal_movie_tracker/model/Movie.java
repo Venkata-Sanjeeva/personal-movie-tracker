@@ -2,8 +2,6 @@ package com.example.personal_movie_tracker.model;
 
 import java.time.LocalDateTime;
 
-import org.apache.commons.lang3.builder.ToStringExclude;
-
 import com.example.personal_movie_tracker.enums.MovieStatus;
 import com.example.personal_movie_tracker.utils.IdentifierGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,7 +15,7 @@ import lombok.*;
 @Setter 
 @NoArgsConstructor 
 @AllArgsConstructor
-@Builder // Useful for creating movie objects in tests/services
+@Builder
 public class Movie {
 	
     @Id
@@ -46,15 +44,7 @@ public class Movie {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    @ToStringExclude
     private User user;
-    
-    @ManyToOne
-    @JsonIgnore
-    @ToStringExclude
-    private Favourite favourite;
-
-    // --- Lifecycle Hooks ---
 
     @PrePersist
     protected void onCreate() {
@@ -67,7 +57,6 @@ public class Movie {
         }
     }
 
-    // Optional: Update lastWatchedAt automatically if status changes to WATCHED
     @PreUpdate
     protected void onUpdate() {
         if (this.status == MovieStatus.WATCHING || this.status == MovieStatus.WATCHED) {

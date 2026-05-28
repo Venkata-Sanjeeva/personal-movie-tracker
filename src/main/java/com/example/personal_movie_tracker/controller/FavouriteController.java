@@ -1,5 +1,7 @@
 package com.example.personal_movie_tracker.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +21,17 @@ public class FavouriteController {
 	private FavouriteService favService;
 	
 	@PostMapping("/create/{movieUID}")
-	public ResponseEntity<String> saveMovieToFavourite(@PathVariable String movieUID) {
-		String msg = favService.createFavourite(movieUID);
+	public ResponseEntity<String> saveMovieToFavourite(
+			@PathVariable String movieUID,
+			Principal principal) {
+		String msg = favService.createFavourite(movieUID, principal.getName());
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(msg);
 	}
 	
-	@DeleteMapping("/delete/{movieUID}/{favUID}")
-	public ResponseEntity<String> removeMovieFromFavourite(
-			@PathVariable String favUID,
-			@PathVariable String movieUID) {
-		 
-		String msg = favService.deleteFavourite(favUID, movieUID);
-		
-		return ResponseEntity.status(HttpStatus.OK).body(msg);
-		
+	@DeleteMapping("/delete/{favUID}")
+	public ResponseEntity<String> removeMovieFromFavourite(@PathVariable String favUID) {
+	    String msg = favService.deleteFavourite(favUID);
+	    return ResponseEntity.status(HttpStatus.OK).body(msg);
 	}
 }

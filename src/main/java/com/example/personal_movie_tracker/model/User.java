@@ -23,7 +23,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String userUID; // Unique identifier for the user
+    private String userUID;
 
     @Column(nullable = false)
     private String name;
@@ -41,16 +41,17 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdAt;
     
+    // One user can log many movies
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Movie> movies = new HashSet<>();
     
+    // One user can have many favorited items
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Favourite> favourite = new HashSet<>();
+    private Set<Favourite> favourites = new HashSet<>();
     
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
-        // Ensure userUID is generated if not set manually
         if (this.userUID == null) {
             this.userUID = IdentifierGenerator.generate("USER");
         }
